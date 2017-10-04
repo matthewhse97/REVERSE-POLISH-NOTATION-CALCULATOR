@@ -1,8 +1,8 @@
 # REVERSE-POLISH-NOTATION-CALCULATOR
-/** @file Reverse_Polish_Notation_Calculator.cpp
+/** @file .cpp
  *  
  *  @author Matthew Reed
- *  @date Oct 4, 2017
+ *  @date 
  */
 
 #include <iostream>
