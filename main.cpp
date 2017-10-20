@@ -101,5 +101,5 @@ float PerformOperation(char operation, float first_operator, float second_operat
     else if(operation == '*')
         return first_operator * second_operator;
     else if(operation == '/')
-    return -1;
+        return first_operator / second_operator;
 }
