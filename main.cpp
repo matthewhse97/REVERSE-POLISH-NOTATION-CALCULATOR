@@ -7,20 +7,26 @@ float EvaluatePostfix(string expression);
 float PerformOperation(char operation, float operand1, float operand2);
 bool IsOperator(char C);
 bool IsNumericDigit(char C);
-int stop_double=0;
+int operation_count=0;
+int number_count=0;
 int invalid_input=0;
 int main()
 {
     string expression;
     while (expression!="exit") {
         expression.clear();
-        stop_double=0;
+        operation_count=0;
+        number_count=0;
+        invalid_input=0;
         cout << "Enter Postfix Expression \n";
         getline(cin, expression);
         if (expression=="exit") break;
         float result = EvaluatePostfix(expression);
-        if (stop_double==2||invalid_input==1){
+        if (operation_count>number_count){
             cout<<"input was invalid please retry"<<endl;
+        }
+        else if (invalid_input==1){
+            cout<<"invalid character entry please retry"<<endl;
         }
         else{
             cout << "Output = " << result << "\n";
@@ -32,15 +38,11 @@ float EvaluatePostfix(string expression)
     stack<float> S;
 
     for(int i = 0;i< expression.length();i++) {
-        if(stop_double==2||invalid_input==1){
-            cout<<i;
-            break;
-        }
-        else if(expression[i] == ' ' || expression[i] == ',') continue;
+        if(expression[i] == ' ' || expression[i] == ',') continue;
         else if(IsOperator(expression[i])) {
-            if(stop_double==1){
+            if(operation_count>number_count){
                 cout<<"Invalid postfix expression used"<<endl;
-                stop_double=2;
+                operation_count=operation_count+1;
             }
             else {
                 float operand2 = S.top();
@@ -49,7 +51,7 @@ float EvaluatePostfix(string expression)
                 S.pop();
                 float result = PerformOperation(expression[i], operand1, operand2);
                 S.push(result);
-                stop_double = 1;
+                operation_count=operation_count+1;
             }
         }
         else if(IsNumericDigit(expression[i])){
@@ -60,11 +62,12 @@ float EvaluatePostfix(string expression)
             }
             i--;
             S.push(operand);
-            stop_double=0;
+            number_count=number_count+1;
         }
         else{
             cout<<expression[i]<<" is an invalid input"<<endl;
             invalid_input=1;
+            return invalid_input;
         }
     }
     return S.top();
@@ -93,9 +96,6 @@ float PerformOperation(char operation, float operand1, float operand2)
         return operand1 * operand2;
     else if(operation == '/')
         return operand1 / operand2;
-    else if (IsOperator(operation))
-        cout<<"Invalid character input"<<endl;
-
     else cout<<"Unexpected Error \n";
     return -1;
 }
